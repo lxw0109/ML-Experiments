@@ -12,12 +12,11 @@ Reference:
 [keras 手把手入门#1-MNIST手写数字识别 深度学习实战闪电入门](http://nooverfit.com/wp/keras-手把手入门1-手写数字识别-深度学习实战/)
 """
 
-from __future__ import print_function
 import keras
 import numpy as np
 import time
 
-from keras.datasets import mnist
+# from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -96,14 +95,16 @@ def run():
     model.compile(loss=keras.metrics.categorical_crossentropy, optimizer=keras.optimizers.Adadelta(), metrics=["accuracy"])
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(x_test, y_test))
 
+    model.save("../data/output/mnist_cnn_keras.h5")
+
     # 测试集上评估准确率
     score = model.evaluate(x_test, y_test, verbose=0)
-    print("Test loss:", score[0])
-    print("Test accuracy:", score[1])
+    print("Test loss:", score[0])    # Test loss: 0.04647096006094944
+    print("Test accuracy:", score[1])    # Test accuracy: 0.9846
 
 
 if __name__ == '__main__':
     start_time = time.time()
     run()
     end_time = time.time()
-    print("Time Cost:", end_time - start_time)
+    print("Time Cost:", end_time - start_time)    # Time Cost: 467.72180104255676
