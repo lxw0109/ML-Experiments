@@ -43,7 +43,7 @@ def run():
     x_test = x_test.reshape(-1, 28, 28, 1).astype("float32")
     """
     # [【keras】解决example案例中MNIST数据集下载不了的问题](http://blog.csdn.net/houchaoqun_xmu/article/details/78492718)
-    f = np.load("../data/mnist.npz")
+    f = np.load("../data/input/mnist.npz")
     x_train, y_train = f["x_train"], f["y_train"]
     x_test, y_test = f["x_test"], f["y_test"]
     f.close()
@@ -103,8 +103,8 @@ def run():
     print("Test accuracy:", score[1])    # Test accuracy: 0.9846
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_time = time.time()
     run()
     end_time = time.time()
-    print("Time Cost:", end_time - start_time)    # Time Cost: 467.72180104255676
+    print("Time Cost:", end_time - start_time)    # Time Cost: 554.4480702877045
