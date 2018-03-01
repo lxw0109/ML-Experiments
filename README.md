@@ -11,16 +11,16 @@ All essential packages for this project are listed in `requirements.txt`, you ca
 1. Each directory in this project contains the (input & output) data(`data/`), implementations(`src/`) and corresponding documents(`docs/`) of a single small project.  
 The structure of each directory in this project is as follows(taking `MNIST` as an example):  
 ```bash
-MNIST/
-├── data/
-|   ├── input/
-|   └── output/
-├── docs
-└── src
-    ├── 1_mnist_tensorflow.py
-    └── 2_mnist_keras.py
-```
-The code files in `src/` are organized in a sequential number as prefix.  
+ MNIST/
+ ├── data/
+ |   ├── input/
+ |   └── output/
+ ├── docs
+ └── src
+     ├── 1_mnist_tensorflow.py
+     └── 2_mnist_keras.py
+ ```
+ The code files in `src/` are organized in a sequential number as prefix.  
 2. Brief instructions for each directory are as follows.
  
  | directory(project) | instruction |
