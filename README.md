@@ -1,24 +1,29 @@
-# MachineLearning Experiments
-**机器学习(Machine Learning, ML)** 知识总结与代码实现。
+# Machine Learning Experiments
+Several small and easy projects on Machine Learning for beginners.
 
 ## Requirements
-本项目所有代码实现均基于[Python3.6+](https://www.python.org/downloads/)完成，所需要的Python包如`requirements.txt`文件，
-请使用`pip install -r requirements.txt -i https://pypi.douban.com/simple/`命令进行安装(推荐使用[Anaconda](https://docs.anaconda.com/anaconda/)/[virtualenv + virtualenvwrapper](http://www.jianshu.com/p/44ab75fbaef2)/管理Python虚拟环境)。
+All the code in this project is implemented in [Python3.6+](https://www.python.org/downloads/).  
+All essential packages for this project are listed in `requirements.txt`, you can install them by 
+`pip install -r requirements.txt -i https://pypi.douban.com/simple/`  
+[Anaconda](https://docs.anaconda.com/anaconda/) or [virtualenv + virtualenvwrapper](http://www.jianshu.com/p/44ab75fbaef2) are strongly recommended to manage your Python environments.
 
-## 说明
-1.每个目录包含某个独立知识点的相关代码实现，目录结构如下(以`MNIST`目录为例)  
+## Notes
+1. Each directory in this project contains the (input & output) data(`data/`), implementations(`src/`) and corresponding documents(`docs/`) of a single small project.  
+The structure of each directory in this project is as follows(taking `MNIST` as an example):  
 ```bash
-MNIST
-├── data
+MNIST/
+├── data/
+|   ├── input/
+|   └── output/
 ├── docs
 └── src
     ├── 1_mnist_tensorflow.py
-    ├── 2_mnist_keras.py
-    └── 3_source_code.py
+    └── 2_mnist_keras.py
 ```
-每个目录中均包含`data/`, `src/`, `docs/`三个目录:  
-+ `data/`为该知识点使用的数据&模型文件  
-+ `docs/`为该知识点相关的总结文档  
-+ `src/`为该知识点相关的代码文件  
- 对于`src/`目录，若该知识点涉及多个部分的代码实现，则将各文件按照`"序号_文件名"`的方式进行命名，以便于顺序查阅。  
+The code files in `src/` are organized in a sequential number as prefix.  
+2. Brief instructions for each directory are as follows.
  
+ | directory(project) | instruction |
+ | :--- | :--- |
+ | MNIST | training and recognizing handwritten digits |
+ | CAPTCHA | training letters in CAPTCHA images and breaking easy CAPTCHA systems |
