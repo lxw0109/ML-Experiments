@@ -9,10 +9,11 @@ And all the essential packages are listed in `requirements.txt`, you can install
 
 ## Notes
 1. Each directory(mostly represents a single tiny project) in this project usually contains three sub-directory:  
- `data/`: the input and output data used
- `src/`: the implementations/code
- `docs/`: corresponding documents
+ `data/`: the input and output data used  
+ `src/`: the implementations/code(files in `src/` are organized in a sequential number as prefix)  
+ `docs/`: corresponding documents  
  Typically, the structure of each directory in this project is as follows(taking `MNIST` as an example):  
+ 
  ```bash
  MNIST/
  ├── data/
@@ -23,7 +24,7 @@ And all the essential packages are listed in `requirements.txt`, you can install
      ├── 1_mnist_tensorflow.py
      └── 2_mnist_keras.py
  ```
- The code files in `src/` are organized in a sequential number as prefix.  
+ 
 2. Brief instructions for each directory are as follows.
  
  | directory(project) | instruction |
