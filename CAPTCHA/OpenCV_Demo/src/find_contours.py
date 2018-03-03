@@ -9,7 +9,8 @@ References:
 1. OpenCV安装、使用的汇总 [OpenCV 3 Tutorials, Resources, and Guides](https://www.pyimagesearch.com/opencv-tutorials-resources-guides/)
 2. 在Ubuntu16.04上安装OpenCV [Ubuntu 16.04: How to install OpenCV](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/#comment-451565)
 3. [Checking your OpenCV version using Python](https://www.pyimagesearch.com/2015/08/10/checking-your-opencv-version-using-python/#comment-451559)
-4. [Getting Started with Images](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html#additional-resources) 网上没有找到cv2的API文档，但有这个学习手册
+4. [Getting Started with Images](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html#additional-resources) 学习手册
+5. [OpenCV-Python API documentation](http://opencv-python-tutroals.readthedocs.io/en/latest/index.html)
 """
 
 import cv2
@@ -19,8 +20,8 @@ from matplotlib import pyplot as plt
 # load the Tetris block image, convert it to grayscale, and threshold the image.
 print("OpenCV Version: {}".format(cv2.__version__))    # 3.4.1
 
-# image = cv2.imread("../data/input/tetris_blocks.png")
-image = cv2.imread("../data/input/lxw_logo.png")
+# image = cv2.imread("../data/input/images/tetris_blocks.png")
+image = cv2.imread("../data/input/images/lxw_logo.png")
 # Warning: Color image loaded by OpenCV is in BGR mode. But Matplotlib displays in RGB mode.
 # So color images will not be displayed correctly in Matplotlib if image is read with OpenCV.
 # plt.imshow(image, cmap="gray", interpolation="bicubic")    # NO

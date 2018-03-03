@@ -1,3 +1,4 @@
 .idea/
 MNIST/data/
 **/*.pyc
+CAPTCHA/solving_captchas_code_examples/extracted_letter_images/
