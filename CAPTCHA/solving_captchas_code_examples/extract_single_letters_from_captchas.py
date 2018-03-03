@@ -3,6 +3,7 @@ import cv2
 import glob
 import imutils
 
+
 def extract_single_letters():
     CAPTCHA_IMAGE_FOLDER = "generated_captcha_images"
     OUTPUT_FOLDER = "extracted_letter_images"
@@ -24,15 +25,12 @@ def extract_single_letters():
         # Load the image and convert it to grayscale
         image = cv2.imread(captcha_image_file)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        cv2.imshow("gray", gray)
 
         # Add some extra padding around the image
         gray = cv2.copyMakeBorder(gray, 8, 8, 8, 8, cv2.BORDER_REPLICATE)
-        cv2.imshow("gray_padding", gray)
 
         # threshold the image (convert it to pure black and white)
         ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-        cv2.imshow("thresh", thresh)
 
         # find the contours (continuous blobs of pixels) the image
         contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -96,3 +94,4 @@ def extract_single_letters():
 
 if __name__ == "__main__":
     extract_single_letters()
+

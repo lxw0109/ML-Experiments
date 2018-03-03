@@ -10,11 +10,12 @@ def resize_to_fit(image, width, height):
     :param height: desired height in pixels
     :return: the resized image
     """
-
     # grab the dimensions of the image, then initialize
     # the padding values
     (h, w) = image.shape[:2]
 
+    # NOTE: 把图片按照w,h中较大的(并按照原比例)进行resize(但是有什么区别？按照短的感觉也对啊？)
+    # 按照w,h中较大的进行resize，是保证w, h在resize后都不要太大，从而保证能够处理到图片中尽可能多的像素点，减少数据损失
     # if the width is greater than the height then resize along
     # the width
     if w > h:
@@ -34,7 +35,7 @@ def resize_to_fit(image, width, height):
     # rounding issues
     image = cv2.copyMakeBorder(image, padH, padH, padW, padW,
         cv2.BORDER_REPLICATE)
-    image = cv2.resize(image, (width, height))
+    image = cv2.resize(image, (width, height))    # NOTE: cv2.resize()第二个参数要求是先width，然后再height
 
     # return the pre-processed image
     return image

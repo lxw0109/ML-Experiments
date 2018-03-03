@@ -2,3 +2,7 @@
 MNIST/data/
 **/*.pyc
 CAPTCHA/solving_captchas_code_examples/extracted_letter_images/
+CAPTCHA/OpenCV_Demo/src/tmp_script.py
+CAPTCHA/**/*.hdf5
+CAPTCHA/**/*.dat
+
