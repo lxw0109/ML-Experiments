@@ -1,5 +1,6 @@
 from keras.models import load_model
 from helpers import resize_to_fit
+from helpers import display_image
 from imutils import paths
 import numpy as np
 import imutils
@@ -12,7 +13,6 @@ def solve_captchas():
     MODEL_LABELS_FILENAME = "model_labels.dat"
     CAPTCHA_IMAGE_FOLDER = "generated_captcha_images"
 
-
     # Load up the model labels (so we can translate model predictions to actual letters)
     with open(MODEL_LABELS_FILENAME, "rb") as f:
         lb = pickle.load(f)
@@ -21,7 +21,7 @@ def solve_captchas():
     model = load_model(MODEL_FILENAME)
 
     # Grab some random CAPTCHA images to test against.
-    # In the real world, you'd replace this section with code to grab a real
+    # NOTE: In the real world, you'd replace this section with code to grab a real
     # CAPTCHA image from a live website.
     captcha_image_files = list(paths.list_images(CAPTCHA_IMAGE_FOLDER))
     captcha_image_files = np.random.choice(captcha_image_files, size=(10,), replace=False)
@@ -31,12 +31,15 @@ def solve_captchas():
         # Load the image and convert it to grayscale
         image = cv2.imread(image_file)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # display_image(image)
 
         # Add some extra padding around the image
         image = cv2.copyMakeBorder(image, 20, 20, 20, 20, cv2.BORDER_REPLICATE)
+        # display_image(image)
 
         # threshold the image (convert it to pure black and white)
         thresh = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+        # display_image(thresh)
 
         # find the contours (continuous blobs of pixels) the image
         contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -75,7 +78,7 @@ def solve_captchas():
         letter_image_regions = sorted(letter_image_regions, key=lambda x: x[0])
 
         # Create an output image and a list to hold our predicted letters
-        output = cv2.merge([image] * 3)
+        output = cv2.merge([image] * 3)    # image.shape: (64, 112). output.shape: (64, 112, 3)
         predictions = []
 
         # loop over the lektters
@@ -85,13 +88,17 @@ def solve_captchas():
 
             # Extract the letter from the original image with a 2-pixel margin around the edge
             letter_image = image[y - 2:y + h + 2, x - 2:x + w + 2]
+            # display_image(letter_image)
 
             # Re-size the letter image to 20x20 pixels to match training data
             letter_image = resize_to_fit(letter_image, 20, 20)
+            # display_image(letter_image)
 
             # Turn the single image into a 4d list of images to make Keras happy
-            letter_image = np.expand_dims(letter_image, axis=2)
-            letter_image = np.expand_dims(letter_image, axis=0)
+            letter_image = np.expand_dims(letter_image, axis=2)    # letter_image.shape: (20, 20, 1)
+            letter_image = np.expand_dims(letter_image, axis=0)    # letter_image.shape: (1, 20, 20, 1)
+            # 训练数据的单个输入为(20, 20, 1), 全部训练数据集为(-1, 20, 20, 1).
+            # 因为这里是一张一张地预测，所以输入改为(1, 20, 20, 1).
 
             # Ask the neural network to make a prediction
             prediction = model.predict(letter_image)
@@ -109,7 +116,8 @@ def solve_captchas():
         print("CAPTCHA text is: {}".format(captcha_text))
 
         # Show the annotated image
-        cv2.imshow("Output", output)
+        cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
+        cv2.imshow("Output", output, )
         cv2.waitKey()
 
 

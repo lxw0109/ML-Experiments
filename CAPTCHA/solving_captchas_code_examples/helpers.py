@@ -1,5 +1,7 @@
-import imutils
 import cv2
+import imutils
+
+from matplotlib import pyplot as plt
 
 
 def resize_to_fit(image, width, height):
@@ -39,3 +41,12 @@ def resize_to_fit(image, width, height):
 
     # return the pre-processed image
     return image
+
+
+def display_image(image):
+    # plt.imshow(image[:, :, ::-1], cmap="gray", interpolation="bicubic")    # NO
+    plt.imshow(image, cmap="gray", interpolation="bicubic")    # OK
+    # hide tick values on X and Y axis
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
