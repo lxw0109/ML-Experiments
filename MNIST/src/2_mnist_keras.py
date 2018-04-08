@@ -47,6 +47,8 @@ def run():
     x_train, y_train = f["x_train"], f["y_train"]
     x_test, y_test = f["x_test"], f["y_test"]
     f.close()
+    print(x_train.shape, y_train.shape)
+    print(x_test.shape, y_test.shape)
 
     # the data, shuffled and split between train and test sets
     # keras输入数据有两种格式，一种是通道数放在前面，一种是通道数放在后面，

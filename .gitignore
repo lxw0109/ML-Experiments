@@ -1,6 +1,8 @@
 .idea/
 MNIST/data/
 **/*.pyc
+**/\.~*
+**/*.zip
 CAPTCHA/solving_captchas_code_examples/extracted_letter_images/
 CAPTCHA/solving_captchas_code_examples/generated_captcha_images/
 CAPTCHA/OpenCV_Demo/src/tmp_script.py
