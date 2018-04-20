@@ -1,3 +1,6 @@
+# TODO:
+1. linear_regresion_demo拟合直线的绘制
+
 # Machine Learning Experiments
 Several tiny projects on Machine Learning for beginners.
 
