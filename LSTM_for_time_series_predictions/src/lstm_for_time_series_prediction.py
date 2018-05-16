@@ -177,21 +177,26 @@ def predict_sequences_multiple(model, data, window_size, prediction_len):
 def run():
     print("> Loading data...")
     X_train, y_train, X_test, y_test = load_data(filename="../data/sp500.csv", window_size=40, normalise_window=True)
-    # X_train, y_train, X_test, y_test = load_data(filename="../data/sinwave.csv", window_size=40, normalise_window=False)
-    # X_train.shape: ()
+    # print(y_train.tolist())
+    """
+    X_train, y_train, X_test, y_test =\
+        load_data(filename="../data/sinwave.csv", window_size=40, normalise_window=False)
+    """
 
     print("> Data Loaded. Compiling...")
     layers = [51, 101, 1]
     model = build_model(layers=layers, input_shape=(X_train.shape[1], X_train.shape[2]))
 
-    model.fit(X_train, y_train, batch_size=512, epochs=10, validation_split=0.05)
+    model.fit(X_train, y_train, batch_size=512, epochs=1, validation_split=0.05)
     print(model.summary())
 
     WINDOW_SIZE = 40
     PREDICTION_LEN = 20
     # predicted = predict_point_by_point(model, X_test)
-    # predicted = predict_sequence_full(model=model, data=X_test, window_size=WINDOW_SIZE)  # NOTE: 这里的window_size要和load_data中的window_size一致
-    predicted = predict_sequences_multiple(model=model, data=X_test, window_size=WINDOW_SIZE, prediction_len=PREDICTION_LEN)
+    # predicted = predict_sequence_full(model=model, data=X_test, window_size=WINDOW_SIZE)
+    # NOTE: 这里的window_size要和load_data中的window_size一致
+    predicted = predict_sequences_multiple(model=model, data=X_test, window_size=WINDOW_SIZE,
+                                           prediction_len=PREDICTION_LEN)
     # print("len(predicted): {0}\npredicted:{1}\n".format(len(predicted), predicted))
     # print("len(true data): {0}\ntrue data:{1}".format(len(y_test), y_test))
     # print("predicted.shape:", predicted.shape)  # (496,)
