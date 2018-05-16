@@ -26,9 +26,9 @@ warnings.filterwarnings("ignore")    # Hide messy Numpy warnings
 
 
 def plot_results(predicted_data, true_data):
-    true_data = list(map(lambda x: float(x), true_data))
+    # true_data = list(map(lambda x: float(x), true_data))
     plt.plot(true_data, label="True Data")
-    predicted_data = list(map(lambda x: float(x), predicted_data))
+    # predicted_data = list(map(lambda x: float(x), predicted_data))
     plt.plot(predicted_data, label="Prediction")
     plt.legend()
     plt.show()
@@ -47,6 +47,7 @@ def load_data(filename, window_size):
         # draw_data_str_list(tmp_data_str_list)
         result.append(tmp_data_str_list)
 
+    result = [list(map(lambda x: float(x), data_str_list)) for data_str_list in result]
     # print(result[-1], len(result[-1]))
     result = np.array(result)    # result.shape: (4950, 51)
 
@@ -121,8 +122,8 @@ def run():
     print(model.summary())
 
     predicted = predict_point_by_point(model, X_test)
-    print("predicted:", predicted)
-    print("predicted.shape:", predicted.shape)    # (496,)
+    # print("predicted:", predicted)
+    # print("predicted.shape:", predicted.shape)    # (496,)
 
     plot_results(predicted, y_test)
 

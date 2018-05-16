@@ -8,6 +8,7 @@ References:
 1. [LSTM Neural Network for Time Series Prediction](http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction)
 """
 
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -25,17 +26,30 @@ warnings.filterwarnings("ignore")  # Hide messy Numpy warnings
 
 
 def plot_results(predicted_data, true_data):
-    fig = plt.figure(facecolor="white")
-    ax = fig.add_subplot(111)
-    true_data = list(map(lambda x: float(x), true_data))
-    ax.plot(true_data, label="True Data")
-    predicted_data = list(map(lambda x: float(x), predicted_data))
+    plt.plot(true_data, label="True Data")
     plt.plot(predicted_data, label="Prediction")
     plt.legend()
     plt.show()
 
 
+def plot_results_multiple(predicted_data, true_data, prediction_len):
+    """
+    :param predicted_data: list of list.
+    :param true_data: shape: (413,)
+    :param prediction_len: 
+    :return: 
+    """
+    plt.plot(true_data, label="True Data")
+    # Pad the list of predictions to shift it in the graph to it's correct start
+    for i, data in enumerate(predicted_data):
+        padding = [None for _ in range(i * prediction_len)]
+        plt.plot(padding + data, label="Prediction")
+        plt.legend()
+    plt.show()
+
+
 def normalise_windows(window_data):
+    # 经过该函数后，数据从str类型转为float类型
     normalised_data = []
     for window in window_data:
         normalised_window = [((float(p) / float(window[0])) - 1) for p in window]
@@ -43,7 +57,7 @@ def normalise_windows(window_data):
     return normalised_data
 
 
-def load_data(filename, window_size, normalise_window=False):
+def load_data(filename, window_size, normalise_window=True):
     # load the training data CSV into the appropriately shaped numpy array
     data = open(filename, "r").read()
     data_str_list = data.split("\n")  # len: 5001
@@ -60,6 +74,9 @@ def load_data(filename, window_size, normalise_window=False):
         # However running the adjusted returns of a stock index through a network would make the optimization
         # process shit itself and not converge to any sort of optimums for such large numbers.
         result = normalise_windows(result)
+    else:
+        result = [list(map(lambda x: float(x), data_str_list)) for data_str_list in result]
+
 
     # print(result[-1], len(result[-1]))
     result = np.array(result)  # result.shape: (4950, 51)
@@ -121,24 +138,66 @@ def predict_point_by_point(model, data):
     return predicted
 
 
+def predict_sequence_full(model, data, window_size):
+    """
+    Shift the window by 1 new prediction each time, re-run predictions on new window
+    
+    :param data: data.shape: (496, 40, 1).
+    """
+    curr_frame = data[0]  # data.shape: (413, 40, 1). curr_frame.shape: (40, 1)
+    predicted = []
+    for i in range(len(data)):
+        predict_result = model.predict(curr_frame[np.newaxis, :, :])  # curr_frame[np.newaxis, :, :].shape: (1, 40, 1)
+        predicted.append(predict_result[0, 0])  # predict_result.shape: (1, 1)
+        curr_frame = curr_frame[1:]
+        curr_frame = np.insert(curr_frame, [window_size-1], predicted[-1], axis=0)
+    return predicted
+
+
+def predict_sequences_multiple(model, data, window_size, prediction_len):
+    """
+    Predict sequence of `prediction_len` steps before shifting prediction run forward by `prediction_len` steps
+    
+    :param data: data.shape: (413, 40, 1).
+    """
+    prediction_seqs = []
+    for i in range(int(len(data)/prediction_len)):
+        curr_frame = data[i * prediction_len]   # curr_frame.shape: (40, 1)
+        predicted = []
+        for _ in range(prediction_len):
+            # curr_frame[np.newaxis, :, :].shape: (1, 40, 1)
+            predict_result = model.predict(curr_frame[np.newaxis, :, :])
+            predicted.append(predict_result[0, 0])
+            curr_frame = curr_frame[1:]
+            curr_frame = np.insert(curr_frame, [window_size-1], predicted[-1], axis=0)
+        prediction_seqs.append(predicted)
+    return prediction_seqs
+
+
 def run():
     print("> Loading data...")
-    # def load_data(filename, window_size, normalise_window=False):
-    X_train, y_train, X_test, y_test = load_data("../data/sinwave.csv", 40, normalise_window=False)
-    # X_train.shape: (4464, 40, 1)
+    X_train, y_train, X_test, y_test = load_data(filename="../data/sp500.csv", window_size=40, normalise_window=True)
+    # X_train, y_train, X_test, y_test = load_data(filename="../data/sinwave.csv", window_size=40, normalise_window=False)
+    # X_train.shape: ()
 
     print("> Data Loaded. Compiling...")
     layers = [51, 101, 1]
     model = build_model(layers=layers, input_shape=(X_train.shape[1], X_train.shape[2]))
 
-    model.fit(X_train, y_train, batch_size=512, epochs=1, validation_split=0.05)
+    model.fit(X_train, y_train, batch_size=512, epochs=10, validation_split=0.05)
     print(model.summary())
 
-    predicted = predict_point_by_point(model, X_test)
-    print("predicted:", predicted)
-    print("predicted.shape:", predicted.shape)  # (496,)
+    WINDOW_SIZE = 40
+    PREDICTION_LEN = 20
+    # predicted = predict_point_by_point(model, X_test)
+    # predicted = predict_sequence_full(model=model, data=X_test, window_size=WINDOW_SIZE)  # NOTE: 这里的window_size要和load_data中的window_size一致
+    predicted = predict_sequences_multiple(model=model, data=X_test, window_size=WINDOW_SIZE, prediction_len=PREDICTION_LEN)
+    # print("len(predicted): {0}\npredicted:{1}\n".format(len(predicted), predicted))
+    # print("len(true data): {0}\ntrue data:{1}".format(len(y_test), y_test))
+    # print("predicted.shape:", predicted.shape)  # (496,)
 
-    plot_results(predicted, y_test)
+    # plot_results(predicted, y_test)
+    plot_results_multiple(predicted, y_test, prediction_len=PREDICTION_LEN)
 
 
 if __name__ == "__main__":
