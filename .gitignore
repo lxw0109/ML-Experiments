@@ -8,4 +8,5 @@ CAPTCHA/solving_captchas_code_examples/generated_captcha_images/
 CAPTCHA/OpenCV_Demo/src/tmp_script.py
 CAPTCHA/**/*.hdf5
 CAPTCHA/**/*.dat
+XGBoost_Demo/data/
 

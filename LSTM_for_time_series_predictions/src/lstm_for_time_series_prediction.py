@@ -187,22 +187,24 @@ def run():
     layers = [51, 101, 1]
     model = build_model(layers=layers, input_shape=(X_train.shape[1], X_train.shape[2]))
 
-    model.fit(X_train, y_train, batch_size=512, epochs=1, validation_split=0.05)
+    model.fit(X_train, y_train, batch_size=512, epochs=10, validation_split=0.05)
     print(model.summary())
 
     WINDOW_SIZE = 40
     PREDICTION_LEN = 20
-    # predicted = predict_point_by_point(model, X_test)
+    predicted = predict_point_by_point(model, X_test)
     # predicted = predict_sequence_full(model=model, data=X_test, window_size=WINDOW_SIZE)
     # NOTE: 这里的window_size要和load_data中的window_size一致
+    """
     predicted = predict_sequences_multiple(model=model, data=X_test, window_size=WINDOW_SIZE,
                                            prediction_len=PREDICTION_LEN)
+    """
     # print("len(predicted): {0}\npredicted:{1}\n".format(len(predicted), predicted))
     # print("len(true data): {0}\ntrue data:{1}".format(len(y_test), y_test))
     # print("predicted.shape:", predicted.shape)  # (496,)
 
-    # plot_results(predicted, y_test)
-    plot_results_multiple(predicted, y_test, prediction_len=PREDICTION_LEN)
+    plot_results(predicted, y_test)
+    # plot_results_multiple(predicted, y_test, prediction_len=PREDICTION_LEN)
 
 
 if __name__ == "__main__":

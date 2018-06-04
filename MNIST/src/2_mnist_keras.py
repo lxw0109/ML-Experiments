@@ -23,7 +23,7 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 
 def run():
-    # batch_size 太小会导致训练慢，过拟合等问题;太大会导致欠拟合。所以要适当选择
+    # batch_size太小会导致训练慢，过拟合等问题; 太大会导致欠拟合。所以要适当选择
     batch_size = 128
     # 0-9手写数字, 共10个类别
     num_classes = 10
