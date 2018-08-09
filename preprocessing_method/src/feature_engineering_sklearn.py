@@ -9,6 +9,8 @@ References:
 1. [使用sklearn做单机特征工程](http://www.cnblogs.com/jasonfreak/p/5448385.html)
 """
 
+import numpy as np
+
 from numpy import vstack, array, nan
 
 # packages for preprocessing
@@ -139,9 +141,41 @@ class FeatureEngineering:
         print(reduced_data)
 
 
+class FeatureEngineering1:
+    """
+    Reference:
+    [几种常用的特征选择方法](https://blog.csdn.net/kebu12345678/article/details/78437118)
+    """
+    def __init__(self):
+        pass
+
+    def univariate_feature_selection(self):
+        from sklearn.model_selection import cross_val_score
+        from sklearn.model_selection import ShuffleSplit
+        from sklearn.datasets import load_boston
+        from sklearn.ensemble import RandomForestRegressor
+
+        # Load boston housing dataset as an example
+        boston = load_boston()
+        X = boston["data"]
+        Y = boston["target"]
+        names = boston["feature_names"]
+        print(f"X.shape: {X.shape}\nY.shape: {Y.shape}")
+
+        rf = RandomForestRegressor(n_estimators=20, max_depth=4)
+        scores = []
+        for i in range(X.shape[1]):
+            score = cross_val_score(rf, X[:, i:i+1], Y, scoring="r2", cv=ShuffleSplit(len(X), 3, 0.3))
+            scores.append((round(np.mean(score), 3), names[i]))
+        print(sorted(scores, reverse=True))
+
+
 if __name__ == "__main__":
+    """
     fe = FeatureEngineering()
     # fe.preprocessing()
     fe.feature_extraction()
     # fe.dimensionality_reduction()
+    """
 
+    # 1.
