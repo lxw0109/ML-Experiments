@@ -3,7 +3,7 @@ h5py==2.7.1
 imutils==0.4.5
 Keras==2.1.4
 matplotlib==2.1.2
-numpy==1.14.0
+numpy==1.22.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
 pytz==2018.3
